@@ -283,20 +283,20 @@ class Brizy_Public_Main {
 		return $content;
 	}
 
-	function editor_head() {
-
-		$twig_template = $this->getTwigTemplate();
-
-		$config_object = $this->getConfigObject();
-
-		$context = array( 'editorData' => $config_object );
-
-		if ( WP_DEBUG ) {
-			$context['DEBUG'] = true;
-		}
-
-		echo $twig_template->renderBlock( 'header_content', $context );
-	}
+//	function editor_head() {
+//
+//		$twig_template = $this->getTwigTemplate();
+//
+//		$config_object = $this->getConfigObject();
+//
+//		$context = array( 'editorData' => $config_object );
+//
+//		if ( WP_DEBUG ) {
+//			$context['DEBUG'] = true;
+//		}
+//
+//		echo $twig_template->renderBlock( 'header_content', $context );
+//	}
 
 
 //	function _invalidate_editor_assets( $new_version, $old_version ) {
