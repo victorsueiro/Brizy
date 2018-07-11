@@ -28,9 +28,8 @@ class Brizy_Shortcode_Posts extends Brizy_Shortcode_AbstractShortcode {
 
 		// this array is used as default values for displayPosts
 		$extra_atts = array(
-			"columns"        => 1,
-			"display_date"   => 1,
-			"display_author" => 1,
+			"columns"      => 1,
+			"display_meta" => 1,
 		);
 		$extra_atts = array_merge( $extra_atts, $atts );
 
@@ -57,27 +56,40 @@ class Brizy_Shortcode_Posts extends Brizy_Shortcode_AbstractShortcode {
 
 		foreach ( $posts as $post ) { ?>
 			<article class="brz-article">
-				<h2><a href="<?php echo get_permalink( $post->ID ); ?>"><?php echo get_the_title( $post ); ?></a></h2>
+				<div class="brz-article-inner">
+					<?php if ( has_post_thumbnail( $post ) ) { ?>
+						<div class="brz-post-thumbnail">
+							<?php echo get_the_post_thumbnail( $post, $thumbnail_size ); ?>
+						</div>
+					<?php } ?>
 
-				<div class="brz-post-thumbnail">
-					<?php echo get_the_post_thumbnail( $post, $thumbnail_size ); ?>
-				</div>
+					<h2 class="brz-post-title">
+						<a href="<?php echo get_permalink( $post->ID ); ?>"><?php echo get_the_title( $post ); ?></a>
+					</h2>
 
-				<div class="brz-post-description">
-					<?php echo $this->getPostExcerpt( $post ); ?>
-				</div>
+					<?php if ( $extra_atts['display_meta'] ) { ?>
+						<div class="brz-post-meta">
+							<span class="brz-post-author">
+								<?php esc_html_e( 'by', 'brizy' ); ?>
+								<a rel="author" href="<?php echo get_author_posts_url( $post->post_author ); ?>"><span itemprop="name"><?php echo get_the_author_meta( 'display_name', $post->post_author ); ?></span></a>
+							</span>
 
-				<?php if ( $extra_atts['display_date'] ) { ?>
-					<div class="brz-post-date">
-						<?php echo get_the_date( "", $post ); ?>
+							<span class="brz-post-date">
+								<?php echo get_the_date( "", $post ); ?>
+							</span>
+
+							<span class="brz-post-comments-number">
+								<a href="<?php echo get_permalink( $post->ID ); ?>#comments">
+									<?php echo  get_comments_number( $post->ID ); ?>
+								</a>
+							</span>
+						</div>
+					<?php } ?>
+
+					<div class="brz-post-description">
+						<?php echo $this->getPostExcerpt( $post ); ?>
 					</div>
-				<?php } ?>
-
-				<?php if ( $extra_atts['display_author'] ) { ?>
-					<div class="brz-post-author">
-						<a rel="author" href="<?php echo get_author_posts_url( $post->post_author ); ?>"><span itemprop="name"><?php echo get_the_author_meta( 'display_name', $post->post_author ); ?></span></a>
-					</div>
-				<?php } ?>
+				</div>
 			</article>
 		<?php }
 
